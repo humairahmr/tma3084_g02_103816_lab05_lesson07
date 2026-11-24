@@ -15,7 +15,7 @@ class LabAApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'BottomNavigationBar Lab A',
+      title: 'BottomNavigationBar Lab C',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
         useMaterial3: true,
