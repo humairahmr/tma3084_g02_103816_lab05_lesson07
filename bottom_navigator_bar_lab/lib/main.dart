@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import 'screen1.dart';
 import 'screen2.dart';
@@ -7,21 +6,7 @@ import 'screen3.dart';
 import 'screen4.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => TabModel(),
-      child: const LabAApp(),
-    ),
-  );
-}
-
-class TabModel extends ChangeNotifier {
-  int selectedIndex = 0;
-
-  void setSelectedIndex(int index) {
-    selectedIndex = index;
-    notifyListeners();
-  }
+  runApp(const LabAApp());
 }
 
 class LabAApp extends StatelessWidget {
@@ -40,8 +25,15 @@ class LabAApp extends StatelessWidget {
   }
 }
 
-class MainNavScreen extends StatelessWidget {
+class MainNavScreen extends StatefulWidget {
   const MainNavScreen({super.key});
+
+  @override
+  State<MainNavScreen> createState() => _MainNavScreenState();
+}
+
+class _MainNavScreenState extends State<MainNavScreen> {
+  int _selectedIndex = 0;
 
   static const List<Widget> _screens = <Widget>[
     Screen1(),
@@ -50,19 +42,21 @@ class MainNavScreen extends StatelessWidget {
     Screen4(),
   ];
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final selectedIndex = context.watch<TabModel>().selectedIndex;
-
     return Scaffold(
       appBar: AppBar(title: const Text('Lab A Navigation')),
-      body: _screens[selectedIndex],
+      body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: selectedIndex,
-        onTap: (index) {
-          context.read<TabModel>().setSelectedIndex(index);
-        },
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.alarm), label: 'Alarm'),
